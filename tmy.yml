@@ -1,0 +1,51 @@
+# Project Configuration for TMY File Request
+
+# Project details
+project_name: Ami  # Name of the site; should match the YAML filename.
+
+# Site Location Details
+location:
+  latitude: 36.011161      # Latitude in Decimal Degrees (North positive).
+  longitude: 140.247336    # Longitude in Decimal Degrees (East positive).
+  altitude: 0              # Altitude in meters. Set a default or provide actual value.
+
+# PV System Configuration
+pv_system:
+  technology: pv            # PV technology type. Options: ['pv', 'tracker'].
+
+  # Fixed Tilt PV Configuration
+  pv:
+    description: 'Fixed tilt photovoltaic system configuration.'
+    tilt: 20                # Tilt angle in degrees.
+    azimuth: 180            # Azimuth angle in degrees.
+
+  # Single Axis Tracker Configuration
+  tracker:
+    description: 'Single axis tracker system configuration.'
+    gcr: 0.3                # Ground covered ratio.
+    axis_azimuth: 180       # Azimuth angle of the tracker axis.
+    max_angle: 45           # Maximum rotation angle of the tracker.
+
+# Analysis Parameters
+analysis:
+  request_id: ''           # Unique request number; fill as needed.
+  
+  # Probability levels for analysis
+  probabilities: 
+    P50: True
+    P75: True
+    P90: False
+    P10: False
+    P99: True
+
+  # Meteorological data to be included in the analysis
+  meteo_data:
+    ambient_temperature: True
+    pm_2_5: True            # Particulate matter 2.5
+    pm_10: False            # Particulate matter 10
+    relative_humidity: True
+    precipitable_water: False
+    wind_direction: False
+
+  granularity: '5 minutes'  # Granularity of the analysis. Options: ["5 minutes", "10 minutes", "15 minutes", "30 minutes", "1 hour"]
+

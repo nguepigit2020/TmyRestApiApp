@@ -1,0 +1,32 @@
+project_name: TMY Nguepi
+location:
+  latitude: 10.9999
+  longitude: 140.247336
+  altitude: 10
+pv_system:
+  technology: yyyy
+  pv:
+    description: jjeje
+    tilt: 10.0
+    azimuth: 11.08
+  tracker:
+    description: This is for test pupose
+    gcr: 10.1
+    axis_azimuth: 10.25
+    max_angle: 64.5
+analysis:
+  request_id: '11'
+  probabilities:
+    P50: 1
+    P75: 0
+    P90: 0
+    P10: 0
+    P99: 1
+  meteo_data:
+    ambient_temperature: 1
+    pm_2_5: 1
+    pm_10: 1
+    relative_humidity: 0
+    precipitable_water: 0
+    wind_direction: 1
+  granularity: '5.2'
