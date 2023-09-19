@@ -63,17 +63,17 @@ class TmyCong(db.Model):
         self.axis_azimuth = axis_azimuth
         self.max_angle = max_angle
         self.request_id = request_id
-        self.p50 = p50
-        self.p75 = p75
-        self.p90 = p90
-        self.p10 = p10
-        self.p99 = p99
-        self.ambient_temperature = ambient_temperature
-        self.pm_2_5 = pm_2_5
-        self.pm_10 = pm_10
-        self.relative_humidity = relative_humidity
-        self.precipitable_water = precipitable_water
-        self.wind_direction = wind_direction
+        self.p50 = stringToBoolean(p50)
+        self.p75 = stringToBoolean(p75)
+        self.p90 = stringToBoolean(p90)
+        self.p10 = stringToBoolean(p10)
+        self.p99 = stringToBoolean(p99)
+        self.ambient_temperature = stringToBoolean(ambient_temperature)
+        self.pm_2_5 = stringToBoolean(pm_2_5)
+        self.pm_10 = stringToBoolean(pm_10)
+        self.relative_humidity = stringToBoolean(relative_humidity)
+        self.precipitable_water = stringToBoolean(precipitable_water)
+        self.wind_direction = stringToBoolean(wind_direction)
         self.granularity = granularity
 
 # Create the database tables
@@ -149,8 +149,8 @@ def get_configuration(id):
 @app.route('/create/configuration', methods=['POST'])
 def create_configuration():
     data = request.json
-
     config = TmyCong(**data)
+    print(config)
 
     db.session.add(config)
     db.session.commit()
@@ -172,20 +172,19 @@ def update_configuration(id):
     else:
         return jsonify({'message': 'Configuration not found'}), 404
 
-### This is use to generate the yaml file
-@app.route('/download/configuration/<int:id>', methods=['GET'])
-def downloadCofig(id):
+#### This methode is use to delete the configuration
+@app.route('/delete/configuration/<int:id>', methods=['DELETE'])
+def delete_configuration(id):
     config = TmyCong.query.get(id)
+
     if config:
-        config_dict = format_data(config)
-        del config_dict['id'] ## let's the id file before generate the tmy configuration
-        print(config_dict)
-    # Generate a YAML file
-    with open('generated_config.yml', 'w') as yaml_file:
-        yaml.dump(config_dict, yaml_file, default_flow_style=False,sort_keys=False)
+        db.session.delete(config)
+        db.session.commit()
+        return jsonify({'message': 'Configuration deleted successfully'})
+    else:
+        return jsonify({'message': 'Configuration not found'}), 404        
 
-    return jsonify({'message': 'YAML file generated successfully'})
-
+### This is use to generate the yaml file
 @app.route('/download_yaml/configuration/<int:id>', methods=['GET'])
 def download_yaml(id):
     config = TmyCong.query.get(id)
@@ -200,7 +199,14 @@ def download_yaml(id):
         response.headers["Content-Disposition"] = "attachment; filename=generated_config_{id}.yml"
         return response
     else:
-        return "Configuration not found", 404    
+        return "Configuration not found", 404  
+
+#### This function allow us to convert string to python boolean
+def stringToBoolean(s:str):
+    if s == 'true':
+        return True          
+    else:
+        return False
 
 if __name__ == '__main__':
     app.run(debug=True)
