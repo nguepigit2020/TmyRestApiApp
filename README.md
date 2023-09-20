@@ -2,7 +2,7 @@
 
 ### 1. Clone the github repo in you local computer using
 ```
-git clone url_remote_repository
+git clone https://github.com/nguepigit2020/TmyRestApiApp.git
 ```
 ### 2. Move to the project directory using
 ```
